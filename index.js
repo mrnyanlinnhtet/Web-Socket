@@ -21,8 +21,12 @@ app.get("/", (res, req) => {
 
 /**______ Socket setup  ______*/
 let io = socket(server);
-io.on("connection", (socket) => {
-    socket.on("chat", (data) => {
-      io.emit("chat", data);
+io.on('connection', (socket) => {
+    socket.on('chat', (data) => {
+      io.sockets.emit('chat', data);
+    });
+
+    socket.on('typing', (name) => {
+       socket.broadcast.emit('typing', name);
     });
 });
