@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Socket IO</title>
-    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js" integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -74,6 +73,7 @@
         padding: 12px 0;
         width: 100%;
         border-radius: 0 0 2px 2px;
+        cursor: pointer;
       }
     </style>
   </head>
@@ -91,6 +91,24 @@
 
    <script>
       const socket = io("http://localhost:4000");
+      let output = document.getElementById('output');
+      let name = document.getElementById('name');
+      let message = document.getElementById('message');
+      let send = document.getElementById('send');
+
+      send.addEventListener('click', () => {
+        let data = {
+            name: name.value,
+            message: message.value
+        }
+        socket.emit('chat', data);
+      });
+
+      socket.on('chat', (data) => {
+        output.innerHTML += `<p><strong>${data.name}: </strong> ${data.message}</p>`;
+        name.value = "";
+        message.value = "";
+      });
    </script>
 </body>
 </html>
